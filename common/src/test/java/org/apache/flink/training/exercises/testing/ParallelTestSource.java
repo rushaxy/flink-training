@@ -45,10 +45,12 @@ public class ParallelTestSource<T> extends RichParallelSourceFunction<T>
         // fashion
         for (T element : testStream) {
             if (subtask == indexOfThisSubtask) {
+                System.out.println(element);
                 ctx.collect(element);
             }
             subtask = (subtask + 1) % numberOfParallelSubtasks;
         }
+        System.out.println();
 
         // test sources are finite, so they emit a Long.MAX_VALUE watermark when they finish
     }

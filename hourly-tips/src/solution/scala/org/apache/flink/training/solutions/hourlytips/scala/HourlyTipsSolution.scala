@@ -57,10 +57,7 @@ object HourlyTipsSolution {
       // the taxi fare stream is in order, by timestamp
       val watermarkStrategy = WatermarkStrategy
         .forMonotonousTimestamps[TaxiFare]()
-        .withTimestampAssigner(new SerializableTimestampAssigner[TaxiFare] {
-          override def extractTimestamp(fare: TaxiFare, streamRecordTimestamp: Long): Long =
-            fare.getEventTimeMillis
-        })
+        .withTimestampAssigner(new SerializableTAsgner)
 
       // setup the pipeline
       env
@@ -95,5 +92,14 @@ object HourlyTipsSolution {
       out.collect((context.window.getEnd, key, sumOfTips))
     }
   }
+
+  class SerializableTAsgner
+      extends SerializableTimestampAssigner[TaxiFare]{
+    override def extractTimestamp(fare: TaxiFare, streamRecordTimestamp: Long): Long = {
+      fare.getEventTimeMillis
+    }
+  }
+
+
 
 }

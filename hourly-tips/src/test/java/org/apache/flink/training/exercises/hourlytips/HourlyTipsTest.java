@@ -58,25 +58,35 @@ public class HourlyTipsTest {
 
         TaxiFare one = testFare(1, t(0), 1.0F);
 
-        ParallelTestSource<TaxiFare> source = new ParallelTestSource<>(one);
+        ParallelTestSource<TaxiFare> source = new ParallelTestSource<>(one,one);
 
-        Tuple3<Long, Long, Float> expected = Tuple3.of(t(60).toEpochMilli(), 1L, 1.0F);
+        Tuple3<Long, Long, Float> expected = Tuple3.of(t(60).toEpochMilli(), 1L, 2.0F);
 
+         System.out.println(results(source));
+        System.out.println(results(source));
+        for(int i=0;i<100;i++){
+            System.out.println(results(source));
+        }
+        System.out.println(results(source));
         assertThat(results(source)).containsExactly(expected);
+        System.out.println("ok");
     }
 
     @Test
     public void testTipsAreSummedByHour() throws Exception {
         TaxiFare oneIn1 = testFare(1, t(0), 1.0F);
+        TaxiFare oneIn2 = testFare(1, t(0), 1.0F);
         TaxiFare fiveIn1 = testFare(1, t(15), 5.0F);
         TaxiFare tenIn2 = testFare(1, t(90), 10.0F);
 
-        ParallelTestSource<TaxiFare> source = new ParallelTestSource<>(oneIn1, fiveIn1, tenIn2);
+        ParallelTestSource<TaxiFare> source = new ParallelTestSource<>(oneIn1, oneIn2,fiveIn1, tenIn2);
 
-        Tuple3<Long, Long, Float> hour1 = Tuple3.of(t(60).toEpochMilli(), 1L, 6.0F);
+        Tuple3<Long, Long, Float> hour1 = Tuple3.of(t(60).toEpochMilli(), 1L, 7.0F);
         Tuple3<Long, Long, Float> hour2 = Tuple3.of(t(120).toEpochMilli(), 1L, 10.0F);
 
-        assertThat(results(source)).containsExactlyInAnyOrder(hour1, hour2);
+        List<Tuple3<Long, Long, Float>> results = results(source);
+        System.out.println(results);
+        assertThat(results).containsExactlyInAnyOrder(hour1, hour2);
     }
 
     @Test
@@ -104,8 +114,13 @@ public class HourlyTipsTest {
         Tuple3<Long, Long, Float> hour1 = Tuple3.of(t(60).toEpochMilli(), 1L, 6.0F);
         Tuple3<Long, Long, Float> hour2 = Tuple3.of(t(120).toEpochMilli(), 2L, 20.0F);
 
+
+        List<Tuple3<Long, Long, Float>> results = results(source);
+        System.out.println(results);
         assertThat(results(source)).containsExactlyInAnyOrder(hour1, hour2);
     }
+
+
 
     public Instant t(int minutes) {
         return DataGenerator.BEGINNING.plus(Duration.ofMinutes(minutes));

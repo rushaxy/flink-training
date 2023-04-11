@@ -75,6 +75,7 @@ public class HourlyTipsExercise {
         // start the data generator
         DataStream<TaxiFare> fares = env.addSource(source);
 
+        System.out.println(fares);
         // replace this with your solution
         if (true) {
             throw new MissingSolutionException();

@@ -56,10 +56,13 @@ public class TaxiFareGenerator implements SourceFunction<TaxiFare> {
             }
 
             ++id;
+//            System.out.println(fare.rideId+","+fare.startTime+","+fare.getEventTimeMillis()+","+fare.driverId+","+fare.tip);
             ctx.collect(fare);
 
+
             // match our event production rate to that of the TaxiRideGenerator
-            Thread.sleep(TaxiRideGenerator.SLEEP_MILLIS_PER_EVENT);
+//            Thread.sleep(TaxiRideGenerator.SLEEP_MILLIS_PER_EVENT*60);
+//            Thread.sleep(1);
         }
     }
 
