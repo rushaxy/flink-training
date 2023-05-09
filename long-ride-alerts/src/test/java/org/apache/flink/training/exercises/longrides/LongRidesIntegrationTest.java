@@ -52,7 +52,7 @@ public class LongRidesIntegrationTest extends LongRidesTestBase {
     @Test
     public void shortRide() throws Exception {
 
-        TaxiRide rideStarted = startRide(1, BEGINNING);
+        TaxiRide rideStarted = startRide(2, BEGINNING);
         TaxiRide endedOneMinLater = endRide(rideStarted, ONE_MINUTE_LATER);
 
         ParallelTestSource<TaxiRide> source =

@@ -42,6 +42,10 @@ import scala.concurrent.duration._
   */
 object LongRidesSolution {
 
+  @throws[Exception]
+  def main(args: Array[String]) =
+    new LongRidesJob(new TaxiRideGenerator, new PrintSinkFunction).execute()
+
   class LongRidesJob(source: SourceFunction[TaxiRide], sink: SinkFunction[Long]) {
 
     /** Creates and executes the ride cleansing pipeline.
@@ -74,21 +78,16 @@ object LongRidesSolution {
 
   }
 
-  @throws[Exception]
-  def main(args: Array[String]): Unit = {
-    val job = new LongRidesJob(new TaxiRideGenerator, new PrintSinkFunction)
 
-    job.execute()
-  }
 
   class AlertFunction extends KeyedProcessFunction[Long, TaxiRide, Long] {
     private var rideState: ValueState[TaxiRide] = _
 
-    override def open(parameters: Configuration): Unit = {
+    override def open(conf: Configuration) =
       rideState = getRuntimeContext.getState(
         new ValueStateDescriptor[TaxiRide]("ride event", classOf[TaxiRide])
       )
-    }
+
 
     override def processElement(
         ride: TaxiRide,
@@ -147,7 +146,8 @@ object LongRidesSolution {
         .between(startEvent.eventTime, endEvent.eventTime)
         .compareTo(Duration.ofHours(2)) > 0
 
-    private def getTimerTime(ride: TaxiRide) = ride.eventTime.toEpochMilli + 2.hours.toMillis
+    private def getTimerTime(ride: TaxiRide) =
+      ride.eventTime.toEpochMilli + 2.hours.toMillis
   }
 
 }

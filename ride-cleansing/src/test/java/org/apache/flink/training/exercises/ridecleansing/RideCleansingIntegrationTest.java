@@ -35,7 +35,7 @@ import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
 
 public class RideCleansingIntegrationTest extends RideCleansingTestBase {
 
-    private static final int PARALLELISM = 2;
+    private static final int PARALLELISM = 1;
 
     /** This isn't necessary, but speeds up the tests. */
     @ClassRule

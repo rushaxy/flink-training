@@ -111,8 +111,7 @@ public class LongRidesSolution {
         }
 
         @Override
-        public void processElement(TaxiRide ride, Context context, Collector<Long> out)
-                throws Exception {
+        public void processElement(TaxiRide ride, Context context, Collector<Long> out) throws Exception {
 
             TaxiRide firstRideEvent = rideState.value();
 

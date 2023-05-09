@@ -109,7 +109,7 @@ public class RidesAndFaresSolution {
         // but for this example it's convenient to have it here for running in the IDE.
         Configuration conf = new Configuration();
         conf.setString("state.backend", "filesystem");
-        conf.setString("state.checkpoints.dir", "file:///tmp/checkpoints");
+        conf.setString("state.checkpoints.dir", "file:\\D:\\data\\tmpcheckpoints");//D:\data\tmp
         conf.setString("execution.checkpointing.interval", "10s");
         conf.setString(
                 "execution.checkpointing.externalized-checkpoint-retention",
